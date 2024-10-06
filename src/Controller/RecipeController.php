@@ -7,14 +7,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\RecipeRepository;
+use App\Entity\Recipe;
 
 class RecipeController extends AbstractController
 {
     #[Route('/recettes', name: 'recipe.index')]
     public function index(Request $request, RecipeRepository $repository): Response
     {
-        $recipes = $repository->findWithDurationLessThan(10);
+        $recipes = $repository->findWithDurationLessThan(20);
+        
+        $em->flush();
         return $this->render('recipe/index.html.twig', [
             'recipes' => $recipes
         ]);
